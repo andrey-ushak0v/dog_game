@@ -1,18 +1,25 @@
-import pygame
-import sys
+import pygame, controls
+from space_banger import Gun
+from pygame.sprite import Group
+from stats import Stats
+
 
 def start():
     pygame.init()
-    screen = pygame.display.set_mode((1200, 800))
+    screen = pygame.display.set_mode((700, 600))
     pygame.display.set_caption('cosmo_wars')
-    color = (9, 3, 5)
+    color = (0, 0, 0)
+    gun = Gun(screen)
+    bullets = Group()
+    inos = Group()
+    controls.create_army(screen, inos)
+    stats = Stats()
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
-        screen.fill(color)
-        pygame.display.flip()
+        controls.events(screen, gun, bullets)
+        gun.update_gun()
+        controls.update(color, screen, gun, inos, bullets)
+        controls.update_bullets(screen, inos, bullets)
+        controls.update_inos(stats, screen, gun, inos, bullets)
 
 start()
